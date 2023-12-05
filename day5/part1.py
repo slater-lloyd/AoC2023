@@ -96,7 +96,7 @@ def main():
         if isInP2Range(curConversion):
             print(f"FINAL: {backtrack(testLocation)}")
             break
-        testLocation += 10000
+        testLocation += 5000
 
     elapsed_time = time.time() - st
     print('Execution time:', elapsed_time*1000, 'milliseconds')
