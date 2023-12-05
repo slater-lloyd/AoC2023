@@ -1,4 +1,7 @@
 from AlmanacLine import AlmanacLine
+import time
+
+st = time.time()
 
 lines = []
 with open("day5/test.txt", "r") as f:
@@ -56,6 +59,18 @@ def testSingleSeed(seedNum):
                 break
     return curVal
 
+def backtrack(loc):
+    while True:
+        loc -= 1
+        curConversion = loc
+        for key in reversed(keysInOrder):
+            for line in mapsDict[key]:
+                if line.isInDestRange(curConversion):
+                    curConversion = line.unConvert(curConversion)
+                    break
+        if not isInP2Range(curConversion):
+            return loc+1
+
 
 def main():
     # for seed in getPart2Seeds():
@@ -68,7 +83,8 @@ def main():
     # seedsDict[seed] = curConversion
 
     # print(sorted(list(seedsDict.values()))[0])
-    testLocation = 5500000
+
+    testLocation = 0
     curConversion = 0
     while True:
         curConversion = testLocation
@@ -78,11 +94,13 @@ def main():
                     curConversion = line.unConvert(curConversion)
                     break
         if isInP2Range(curConversion):
-            print(f"Result: {testLocation} (seed: {curConversion})")
+            print(f"FINAL: {backtrack(testLocation)}")
             break
-        testLocation += 1
-        if testLocation % 10000 == 0:
-            print(f"Working on {testLocation}")
+        testLocation += 10000
+
+    elapsed_time = time.time() - st
+    print('Execution time:', elapsed_time*1000, 'milliseconds')
+
 
 
 if __name__ == "__main__":
