@@ -28,10 +28,10 @@ def getWinnableCountV2(time, dist):
     # dist/(totalTime-holdTime) = holdTime
     # dist/totalTime = holdTime^2
     # holdTime = sqrt(dist/totalTime)
-    holdTimeOfDist = math.sqrt(dist/time)
-    holdTime = holdTimeOfDist + 1
-    ret = math.sqrt(time**2 - 4 * dist)
-    return math.sqrt(dist/time)
+    holdTime = math.floor((time - math.sqrt(time**2 - (4*dist))) / 2)
+    holdTime2 = math.ceil((time + math.sqrt(time**2 - (4*dist))) / 2)
+
+    return holdTime2 - holdTime - 1
 
 
 def main():

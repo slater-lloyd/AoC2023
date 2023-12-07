@@ -24,14 +24,12 @@ def getWinnableCount(time, dist):
 
     return 0
 
+
 def getWinnableCountV2(time, dist):
-    # dist = (totalTime-holdTime) * holdTime
-    # dist/(totalTime-holdTime) = holdTime
-    # dist/totalTime = holdTime^2
-    # holdTime = sqrt(dist/totalTime)
-    holdTimeOfDist = math.sqrt(dist/time)
-    holdTime = holdTimeOfDist + 1
-    return time - (holdTime*2) + 1
+    holdTime = math.floor((time - math.sqrt(time**2 - (4*dist))) / 2)
+    holdTime2 = math.ceil((time + math.sqrt(time**2 - (4*dist))) / 2)
+
+    return holdTime2 - holdTime - 1
 
 
 def main():
@@ -47,7 +45,7 @@ def main():
 
     print(f"Answer V1: {product}")
     print(f"V1 List: {winCounts}")
-    print(f"V1 Time: {time.time() - st} seconds")
+    print(f"V1 Time: {(time.time() - st) * 1000} milliseconds")
 
     st = time.time()
 
@@ -59,7 +57,7 @@ def main():
 
     print(f"Answer V2: {productV2}")
     print(f"V2 List: {winCountsV2}")
-    print(f"V2 Time: {time.time() - st} seconds")
+    print(f"V2 Time: {(time.time() - st) * 1000} milliseconds")
 
 
 if __name__ == "__main__":
