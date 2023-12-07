@@ -2,7 +2,7 @@ from functools import cmp_to_key
 
 input = []
 
-with open("day7/test.txt", "r") as f:
+with open("day7/test2.txt", "r") as f:
     input = f.read().splitlines()
 
 
@@ -66,16 +66,24 @@ def isFourOfKind(hand):
 
 
 def isFullHouse(hand):
+    test = hand
+    handSet = set(hand)
     has2 = False
     has3 = False
-    for card in hand:
-        if hand.count(card) == 2:
-            has2 = True
-        elif hand.count(card) == 3:
+    for card in handSet:
+        if hand.count(card) == 3:
+            hand = hand.replace(card, "")
             has3 = True
+        elif hand.count(card) == 2 and "J" in hand:
+            hand = hand.replace(card, "")
+            hand = hand.replace('J', '')
+            has3 = True
+        elif hand.count(card) == 2:
+            hand = hand.replace(card, "")
+            has2 = True
 
     if has2 and has3:
-        print(f"Full house: {hand}")
+        print(f"Full house: {test}")
         return True
     return False
 
@@ -90,23 +98,32 @@ def isThreeOfKind(hand):
 
 def isTwoPair(hand):
     pairCount = 0
-    for card in hand:
-        if hand.count(card) == 2 or (hand.count(card)+hand.count("J") == 2 and card != "J"):
-            if hand.count("J") == 1:
-                hand.replace("J", "")
+    test = hand
+    handSet = set(hand)
+    for card in handSet:
+        if hand.count(card) == 1 and "J" in hand:
+            hand = hand.replace(card, "")
+            hand = hand.replace('J', '')
+            pairCount += 1
+        elif hand.count(card) == 2:
+            hand = hand.replace(card, "")
             pairCount += 1
 
-    if pairCount == 4:
-        print(f"Two pair: {hand}")
+    if pairCount == 2:
+        print(f"Two pair: {test}")
         return True
     return False
 
 
 def isPair(hand):
-    for card in hand:
-        if hand.count(card) == 2 or (hand.count(card)+hand.count("J") == 2 and card != "J"):
-            print(f"Pair: {hand}")
-            return True
+    handSet = set(hand)
+    if len(handSet) == 5 and "J" in handSet:
+        print(f"Pair: {hand}")
+        return True
+    elif len(handSet) == 4:
+        print(f"Pair: {hand}")
+        return True
+    
     return False
 
 
