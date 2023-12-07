@@ -1,4 +1,5 @@
 import math
+import time
 
 lines = []
 
@@ -22,18 +23,43 @@ def getWinnableCount(time, dist):
     return 0
 
 
+def getWinnableCountV2(time, dist):
+    # dist = (totalTime-holdTime) * holdTime
+    # dist/(totalTime-holdTime) = holdTime
+    # dist/totalTime = holdTime^2
+    # holdTime = sqrt(dist/totalTime)
+    holdTimeOfDist = math.sqrt(dist/time)
+    holdTime = holdTimeOfDist + 1
+    ret = math.sqrt(time**2 - 4 * dist)
+    return math.sqrt(dist/time)
+
+
 def main():
     times = parse(lines[0])
     dist = parse(lines[1])
 
+    st = time.time()
     winCounts = []
     for i in range(len(times)):
         winCounts.append(getWinnableCount(times[i], dist[i]))
 
     product = math.prod(winCounts)
 
-    print(f"Answer: {product}")
-    print(winCounts)
+    print(f"Answer V1: {product}")
+    print(f"V1 List: {winCounts}")
+    print(f"V1 Time: {time.time() - st} seconds")
+
+    st = time.time()
+
+    winCountsV2 = []
+    for i in range(len(times)):
+        winCountsV2.append(getWinnableCountV2(times[i], dist[i]))
+
+    productV2 = math.prod(winCountsV2)
+
+    print(f"Answer V2: {productV2}")
+    print(f"V2 List: {winCountsV2}")
+    print(f"V2 Time: {time.time() - st} seconds")
 
 
 if __name__ == "__main__":
