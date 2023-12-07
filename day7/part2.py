@@ -52,6 +52,7 @@ def getVal(hand):
 def isFiveOfKind(hand):
     for card in hand:
         if hand.count(card) == 5 or (hand.count(card)+hand.count("J") == 5 and card != "J"):
+            print(f"Five of kind: {hand}")
             return True
     return False
 
@@ -59,50 +60,52 @@ def isFiveOfKind(hand):
 def isFourOfKind(hand):
     for card in hand:
         if hand.count(card) == 4 or (hand.count(card)+hand.count("J") == 4 and card != "J"):
+            print(f"Four of kind: {hand}")
             return True
     return False
 
 
 def isFullHouse(hand):
-    tempHand = hand
-    for card in tempHand:
-        if tempHand.count(card) == 2:
-            tempHand.replace(card, "")
-            break
+    has2 = False
+    has3 = False
+    for card in hand:
+        if hand.count(card) == 2:
+            has2 = True
+        elif hand.count(card) == 3:
+            has3 = True
 
-    for card in tempHand:
-        if tempHand.count(card) == 3:
-            return True
-        elif tempHand.count(card) == 2 and "J" in tempHand:
-            return True
+    if has2 and has3:
+        print(f"Full house: {hand}")
+        return True
     return False
 
 
 def isThreeOfKind(hand):
     for card in hand:
         if hand.count(card) == 3 or (hand.count(card)+hand.count("J") == 3 and card != "J"):
+            print(f"Three of kind: {hand}")
             return True
     return False
 
 
 def isTwoPair(hand):
-    tempHand = hand
-    for card in tempHand:
-        if tempHand.count(card) == 2:
-            tempHand.replace(card, "")
-            break
+    pairCount = 0
+    for card in hand:
+        if hand.count(card) == 2 or (hand.count(card)+hand.count("J") == 2 and card != "J"):
+            if hand.count("J") == 1:
+                hand.replace("J", "")
+            pairCount += 1
 
-    for card in tempHand:
-        if tempHand.count(card) == 2 or ("J" in tempHand and card != "J"):
-            return True
+    if pairCount == 4:
+        print(f"Two pair: {hand}")
+        return True
     return False
 
 
 def isPair(hand):
     for card in hand:
         if hand.count(card) == 2 or (hand.count(card)+hand.count("J") == 2 and card != "J"):
-            if "J" in hand:
-                print(f"Pair: {hand}")
+            print(f"Pair: {hand}")
             return True
     return False
 
@@ -115,6 +118,7 @@ def main():
     sum = 0
     for i, hand in enumerate(hands):
         sum += int(hand[1])*(i+1)
+        print(hand[1], i+1)
 
     print(sum)
 
