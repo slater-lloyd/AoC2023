@@ -44,8 +44,6 @@ def isInBounds(loc, space):
 
 def part1(space):
     space = addSpaces(space)
-    for line in space:
-        print(line)
     galaxyDistances = []
     compared = []
     galaxyLocs = []
@@ -79,10 +77,6 @@ def addSpacesV2(space):
 
 def part2(space, gap):
     space, rowJumps, colJumps = addSpacesV2(space)
-    for line in space:
-        print(line)
-    print("rows", rowJumps)
-    print("cols", colJumps)
     galaxyDistances = []
     compared = []
     galaxyLocs = []
