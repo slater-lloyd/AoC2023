@@ -1,5 +1,4 @@
 from sys import argv
-from itertools import permutations
 
 input = []
 
@@ -40,30 +39,53 @@ def isValidList(springs, nums):
             return False
     return True
 
-
-def getAllConfigs(springs, nums):
-    totalBroken = sum(nums)
-    missingBroken = totalBroken - springs.count("#")
-    missingWorking = springs.count("?") - missingBroken
-    unknowns = "#"*missingBroken + "."*missingWorking
-    
-    perms = [p for p in permutations(unknowns)]
-    return perms
-
+def dnc(springs, nums):
+    qIndex = -1
+    try:
+        qIndex = springs.index("?")
+    except ValueError:
+        pass
+    if qIndex >= 0:
+        broken = springs[0:qIndex] + "#" + springs[qIndex+1:]
+        working = springs[0:qIndex] + "." + springs[qIndex+1:]
+        
+        if broken.count("#") <= sum(nums):
+            return dnc(broken, nums) + dnc(working, nums)
+        else:
+            working = working.replace("?", ".")
+            if isValidList(working, nums):
+                return 1 
+            return 0
+    else:
+        if isValidList(springs, nums):
+            return 1 
+        return 0
 
 def part1(springs, nums):
     validsList = []
     for i in range(len(springs)):
-        perms = getAllConfigs(springs[i], nums[i])
-        countValid = 0
-        for perm in perms:
-            permList = list(perm)
-            permList.reverse()
-            temp = [spring if spring != "?" else permList.pop() for spring in springs[i]]
-            if isValidList(temp, nums[i]):
-                countValid += 1
+        countValid = dnc(springs[i], nums[i])
         validsList.append(countValid)
-        print(i, countValid)
+
+    return sum(validsList)
+
+def part2(springs, nums):
+    validsList = []
+    for i in range(len(springs)):
+        if springs[i][0] != "?" and springs[i][-1] != "?":
+            countValid = dnc(springs[i], nums[i])
+            print(springs[i], nums[i], countValid)
+            validsList.append(countValid)
+        else:
+            springsX5 = []
+            numsX5 = []
+            for _ in range(5):
+                numsX5.extend(nums[i])
+                springsX5.append(springs[i])
+            springsX5 = "?".join(springsX5)
+            countValid = dnc(springsX5, numsX5)
+            print(springsX5, numsX5, countValid)
+            validsList.append(countValid)
     return sum(validsList)
 
 def main():
@@ -75,6 +97,7 @@ def main():
         nums.append(parsed[1])
 
     print("Part 1:", part1(springs, nums))
+    print("Part 2:", part2(springs, nums))
 
 
 if __name__ == "__main__":
