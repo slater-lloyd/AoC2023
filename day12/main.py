@@ -18,6 +18,7 @@ def parse(line):
     nums = [int(i) for i in nums]
     return (springs, nums)
 
+validDict = {}
 
 def isValidList(springs, nums):
     brokenGrouped = []
@@ -97,7 +98,7 @@ def main():
         nums.append(parsed[1])
 
     print("Part 1:", part1(springs, nums))
-    print("Part 2:", part2(springs, nums))
+    #print("Part 2:", part2(springs, nums))
 
 
 if __name__ == "__main__":
