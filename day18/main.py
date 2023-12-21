@@ -15,6 +15,24 @@ def parse(line):
     line = line.split()
     return [line[0], int(line[1]), line[2]]
 
+def parseV2(line):
+    line = line.split()
+    hexVals = line[2][2:-1]
+    direction = hexVals[-1]
+    intNum = int(hexVals[:-1], 16)
+    direction = hexVals[-1]
+    if direction == "0":
+        direction = "R"
+    elif direction == "1":
+        direction = "D"
+    elif direction == "2":
+        direction = "L"
+    elif direction == "3":
+        direction = "U"
+    else:
+        print("ERROR IN PARSING")
+    return [direction, intNum].copy()
+
 def part1():
     codes = [parse(line) for line in input]
     Rs = sum([x[1] for x in codes if x[0] == "R"])
@@ -116,8 +134,43 @@ def floodFill(screen,
             queue.append([posX, posY-1])
     return screen
 
+def getPoints(codes):
+    coords = []
+    curCoord = [0, 0]
+    parim = 0
+    for code in codes:
+        if code[0] == "R":
+            curCoord[0] += code[1]
+            parim += code[1]
+        elif code[0] == "L":
+            curCoord[0] -= code[1]
+            parim += code[1]
+        elif code[0] == "U":
+            curCoord[1] += code[1]
+            parim += code[1]
+        elif code[0] == "D":
+            curCoord[1] -= code[1]
+            parim += code[1]
+        else:
+            print("ERROR IN POINTS")
+        coords.append(curCoord.copy())
+    return coords, parim
+
+def getShoelace(coords):
+    coordCount = len(coords)
+    leftProd = 0
+    rightProd = 0
+    for i in range(coordCount):
+        leftProd += coords[i][0] * coords[(i+1)%coordCount][1]
+    for i in range(coordCount):
+        rightProd += coords[(i+1)%coordCount][0] * coords[i][1]
+    return abs(leftProd-rightProd)/2
+
+
 def part2():
-    pass
+    codes = [parseV2(line) for line in input]
+    points, parim = getPoints(codes)
+    return getShoelace(points) + parim/2 + 1
 
 
 def main():
