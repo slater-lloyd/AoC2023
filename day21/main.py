@@ -81,7 +81,7 @@ def part2():
 
     avgTouch = sum(touching)/len(touching)
     val = 0
-    for i in range(5000):
+    for i in range(26501365):
         val += avgTouch * i
     return val
 
