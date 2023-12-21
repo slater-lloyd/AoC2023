@@ -6,7 +6,7 @@ def parse(line):
     return [int(val) for val in strLine]
 
 
-with open("day9/test.txt", "r") as f:
+with open("day9/test3.txt", "r") as f:
     input = f.read().splitlines()
 
 
